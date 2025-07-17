@@ -1,9 +1,10 @@
-package org.zr.tickets.domain;
+package org.zr.tickets.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.zr.tickets.domain.enums.EventStatusEnum;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,10 +28,10 @@ public class Event {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "start")
+    @Column(name = "event_start")
     private LocalDateTime start;
 
-    @Column(name = "end")
+    @Column(name = "event_end")
     private LocalDateTime end;
 
     @Column(name = "venue", nullable = false)

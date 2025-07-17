@@ -1,4 +1,4 @@
-package org.zr.tickets.domain
+package org.zr.tickets.domain.enums
 
 enum class TicketStatusEnum {
     PURCHASED,
