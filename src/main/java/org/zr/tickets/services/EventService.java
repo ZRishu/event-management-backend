@@ -1,7 +1,7 @@
 package org.zr.tickets.services;
 
 import org.zr.tickets.domain.CreateEventRequest;
-import org.zr.tickets.domain.entities.Event;
+import org.zr.tickets.entities.Event;
 
 import java.util.UUID;
 
