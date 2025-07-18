@@ -12,6 +12,5 @@ data class CreateEventRequest(
     val salesStart: LocalDateTime,
     val salesEnd: LocalDateTime,
     val status: EventStatusEnum,
-    val organizer: User,
     val ticketTypes: List<CreateTicketTypeRequest> = emptyList()
 )
