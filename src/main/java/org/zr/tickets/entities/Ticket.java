@@ -1,4 +1,4 @@
-package org.zr.tickets.domain.entities;
+package org.zr.tickets.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
