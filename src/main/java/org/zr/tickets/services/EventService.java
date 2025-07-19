@@ -5,9 +5,11 @@ import org.springframework.data.domain.Pageable;
 import org.zr.tickets.domain.CreateEventRequest;
 import org.zr.tickets.entities.Event;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface EventService {
     Event createEvent(UUID organizerId, CreateEventRequest event);
     Page<Event> listEventsForOrganizer(UUID organizerId, Pageable pageable);
+    Optional<Event> getEventForOrganizer(UUID organizerId, UUID eventId);
 }
