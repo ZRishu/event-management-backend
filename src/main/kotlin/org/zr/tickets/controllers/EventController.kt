@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.web.bind.annotation.*
 import org.zr.tickets.domain.dtos.CreateEventRequestDto
 import org.zr.tickets.domain.dtos.CreateEventResponseDto
+import org.zr.tickets.domain.dtos.GetEventDetailsResponseDto
 import org.zr.tickets.domain.dtos.ListEventResponseDto
 import org.zr.tickets.mappers.EventMapper
 import org.zr.tickets.services.EventService
@@ -43,6 +44,18 @@ class EventController(
 
         val events = eventService.listEventsForOrganizer(parseUserId(jwt), pageable)
         return ResponseEntity.ok(events.map {eventMapper.toListEventDto(it) })
+    }
+
+    @GetMapping("/{eventId}")
+    fun getEvent(
+        @AuthenticationPrincipal jwt: Jwt,
+        @PathVariable eventId: UUID
+    ): ResponseEntity<GetEventDetailsResponseDto> {
+
+        return eventService.getEventForOrganizer(parseUserId(jwt), eventId)
+            .map { eventMapper.toGetEventDetailsResponseDto(it) }
+            .map { ResponseEntity.ok(it) }
+            .orElse(ResponseEntity.notFound().build())
     }
 
     private fun parseUserId(jwt: Jwt): UUID {
