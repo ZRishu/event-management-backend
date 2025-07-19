@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.zr.tickets.domain.CreateEventRequest;
 import org.zr.tickets.domain.UpdateEventRequest;
 import org.zr.tickets.domain.UpdateTicketTypeRequest;
+import org.zr.tickets.domain.enums.EventStatusEnum;
 import org.zr.tickets.entities.Event;
 import org.zr.tickets.entities.TicketType;
 import org.zr.tickets.entities.User;
@@ -143,5 +144,10 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public void deleteEventForOrganizer(UUID organizerId, UUID eventId) {
         getEventForOrganizer(organizerId, eventId).ifPresent(eventRepository::delete);
+    }
+
+    @Override
+    public Page<Event> listPublishedEvents(Pageable pageable) {
+        return eventRepository.findByStatus(EventStatusEnum.PUBLISHED, pageable);
     }
 }
