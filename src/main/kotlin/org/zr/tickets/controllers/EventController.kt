@@ -12,6 +12,8 @@ import org.zr.tickets.domain.dtos.CreateEventRequestDto
 import org.zr.tickets.domain.dtos.CreateEventResponseDto
 import org.zr.tickets.domain.dtos.GetEventDetailsResponseDto
 import org.zr.tickets.domain.dtos.ListEventResponseDto
+import org.zr.tickets.domain.dtos.UpdateEventRequestDto
+import org.zr.tickets.domain.dtos.UpdateEventResponseDto
 import org.zr.tickets.mappers.EventMapper
 import org.zr.tickets.services.EventService
 import java.util.*
@@ -34,6 +36,20 @@ class EventController(
         val createdEvent = eventService.createEvent(parseUserId(jwt), createEventRequest)
         val eventDto = eventMapper.toDto(createdEvent)
         return ResponseEntity(eventDto, HttpStatus.CREATED)
+    }
+
+    @PutMapping("/{eventId}")
+    fun updateEvent(
+        @AuthenticationPrincipal jwt: Jwt,
+        @PathVariable eventId: UUID,
+        @Valid @RequestBody updateEventRequestDto: UpdateEventRequestDto
+    ): ResponseEntity<UpdateEventResponseDto> {
+
+        val updateEventRequest = eventMapper.fromDto(updateEventRequestDto)
+
+        val updatedEvent = eventService.updateEventForOrganizer(parseUserId(jwt), eventId, updateEventRequest)
+        val eventDto = eventMapper.toUpdateEventResponseDto(updatedEvent)
+        return ResponseEntity.ok(eventDto)
     }
 
     @GetMapping
