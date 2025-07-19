@@ -8,12 +8,36 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.zr.tickets.domain.dtos.ErrorDto
+import org.zr.tickets.exceptions.EventNotFoundException
+import org.zr.tickets.exceptions.EventUpdateException
+import org.zr.tickets.exceptions.TicketTypeNotFoundException
 import org.zr.tickets.exceptions.UserNotFoundException
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
 
     private val log = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
+
+    @ExceptionHandler(EventUpdateException::class)
+    fun handleEventUpdateException(ex: EventUpdateException): ResponseEntity<ErrorDto> {
+        log.error("Caught EventUpdateException", ex)
+        val errorDto = ErrorDto(error = "Unable to update event")
+        return ResponseEntity(errorDto, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(TicketTypeNotFoundException::class)
+    fun handleTicketTypeNotFoundException(ex: TicketTypeNotFoundException): ResponseEntity<ErrorDto> {
+        log.error("Caught TicketTypeNotFoundException", ex)
+        val errorDto = ErrorDto(error = "Ticket type not found")
+        return ResponseEntity(errorDto, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(EventNotFoundException::class)
+    fun handleEventNotFoundException(ex: EventNotFoundException): ResponseEntity<ErrorDto> {
+        log.error("Caught EventNotFoundException", ex)
+        val errorDto = ErrorDto(error = "Event not found")
+        return ResponseEntity(errorDto, HttpStatus.BAD_REQUEST)
+    }
 
     @ExceptionHandler(UserNotFoundException::class)
     fun handleUserNotFoundException(ex: UserNotFoundException): ResponseEntity<ErrorDto> {
