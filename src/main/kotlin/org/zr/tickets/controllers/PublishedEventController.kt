@@ -4,12 +4,15 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.zr.tickets.domain.dtos.GetPublishedEventDetailsResponseDto
 import org.zr.tickets.domain.dtos.ListPublishedEventResponseDto
 import org.zr.tickets.mappers.EventMapper
 import org.zr.tickets.services.EventService
+import java.util.UUID
 
 @RestController
 @RequestMapping("/api/v1/published-events")
@@ -32,5 +35,16 @@ class PublishedEventController(
         return ResponseEntity.ok(
             events.map { eventMapper.toListPublishedEventResponseDto(it) }
         )
+    }
+    
+    @GetMapping("/{eventId}")
+    fun getPublishedEvent(
+        @PathVariable eventId: UUID,
+    ): ResponseEntity<GetPublishedEventDetailsResponseDto> {
+
+        return eventService.getPublishedEvent(eventId)
+            .map { eventMapper.toGetPublishedEventDetailsResponseDto(it) }
+            .map { ResponseEntity.ok(it) }
+            .orElse(ResponseEntity.notFound().build())
     }
 }
