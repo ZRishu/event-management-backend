@@ -1,7 +1,6 @@
 package org.zr.tickets.domain.dtos
 
-import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 data class GetPublishedEventDetailsTicketTypesResponseDto(
     val id: UUID,
