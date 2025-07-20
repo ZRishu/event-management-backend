@@ -16,6 +16,7 @@ import org.zr.tickets.domain.dtos.UpdateEventRequestDto
 import org.zr.tickets.domain.dtos.UpdateEventResponseDto
 import org.zr.tickets.mappers.EventMapper
 import org.zr.tickets.services.EventService
+import org.zr.tickets.util.JwtUtil.parseUserId
 import java.util.*
 
 @RestController
@@ -81,9 +82,5 @@ class EventController(
     ): ResponseEntity<Void> {
         eventService.deleteEventForOrganizer(parseUserId(jwt), eventId)
         return ResponseEntity.noContent().build()
-    }
-
-    private fun parseUserId(jwt: Jwt): UUID {
-        return UUID.fromString(jwt.subject)
     }
 }
