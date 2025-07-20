@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.zr.tickets.domain.dtos.ErrorDto
 import org.zr.tickets.exceptions.EventNotFoundException
 import org.zr.tickets.exceptions.EventUpdateException
+import org.zr.tickets.exceptions.QrCodeGenerationException
 import org.zr.tickets.exceptions.TicketTypeNotFoundException
 import org.zr.tickets.exceptions.UserNotFoundException
 
@@ -17,6 +18,13 @@ import org.zr.tickets.exceptions.UserNotFoundException
 class GlobalExceptionHandler {
 
     private val log = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
+
+    @ExceptionHandler(QrCodeGenerationException::class)
+    fun handleQrCodeGenerationException(ex: QrCodeGenerationException): ResponseEntity<ErrorDto> {
+        log.error("Caught QrCodeGenerationException", ex)
+        val errorDto = ErrorDto(error = "Unable to generate QR Code")
+        return ResponseEntity(errorDto, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
 
     @ExceptionHandler(EventUpdateException::class)
     fun handleEventUpdateException(ex: EventUpdateException): ResponseEntity<ErrorDto> {
