@@ -12,6 +12,7 @@ import org.zr.tickets.exceptions.EventNotFoundException
 import org.zr.tickets.exceptions.EventUpdateException
 import org.zr.tickets.exceptions.QrCodeGenerationException
 import org.zr.tickets.exceptions.QrCodeNotFoundException
+import org.zr.tickets.exceptions.TicketNotFoundException
 import org.zr.tickets.exceptions.TicketTypeNotFoundException
 import org.zr.tickets.exceptions.TicketsSoldOutException
 import org.zr.tickets.exceptions.UserNotFoundException
@@ -20,6 +21,13 @@ import org.zr.tickets.exceptions.UserNotFoundException
 class GlobalExceptionHandler {
 
     private val log = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
+
+    @ExceptionHandler(TicketNotFoundException::class)
+    fun handleTicketNotFoundException(ex: TicketNotFoundException): ResponseEntity<ErrorDto> {
+        log.error("Caught TicketNotFoundException", ex)
+        val errorDto = ErrorDto(error = "Ticket not found")
+        return ResponseEntity(errorDto, HttpStatus.BAD_REQUEST)
+    }
 
     @ExceptionHandler(TicketsSoldOutException::class)
     fun handleTicketsSoldOutException(ex: TicketsSoldOutException): ResponseEntity<ErrorDto> {
