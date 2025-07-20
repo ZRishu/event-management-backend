@@ -8,6 +8,7 @@ import org.zr.tickets.entities.Ticket;
 import org.zr.tickets.repositories.TicketRepository;
 import org.zr.tickets.services.TicketService;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -19,5 +20,10 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Page<Ticket> listTicketForUser(UUID userId, Pageable pageable) {
         return ticketRepository.findByPurchaserId(userId, pageable);
+    }
+
+    @Override
+    public Optional<Ticket> getTicketForUser(UUID userId, UUID ticketId) {
+        return ticketRepository.findByIdAndPurchaserId(ticketId, userId);
     }
 }
