@@ -11,13 +11,29 @@ import org.zr.tickets.domain.dtos.ErrorDto
 import org.zr.tickets.exceptions.EventNotFoundException
 import org.zr.tickets.exceptions.EventUpdateException
 import org.zr.tickets.exceptions.QrCodeGenerationException
+import org.zr.tickets.exceptions.QrCodeNotFoundException
 import org.zr.tickets.exceptions.TicketTypeNotFoundException
+import org.zr.tickets.exceptions.TicketsSoldOutException
 import org.zr.tickets.exceptions.UserNotFoundException
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
 
     private val log = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
+
+    @ExceptionHandler(TicketsSoldOutException::class)
+    fun handleTicketsSoldOutException(ex: TicketsSoldOutException): ResponseEntity<ErrorDto> {
+        log.error("Caught TicketsSoldOutException", ex)
+        val errorDto = ErrorDto(error = "Tickets are sold out for this ticket type")
+        return ResponseEntity(errorDto, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(QrCodeNotFoundException::class)
+    fun handleQrCodeNotFoundException(ex: QrCodeNotFoundException): ResponseEntity<ErrorDto> {
+        log.error("Caught QrCodeNotFoundException", ex)
+        val errorDto = ErrorDto(error = "QR Code not found")
+        return ResponseEntity(errorDto, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
 
     @ExceptionHandler(QrCodeGenerationException::class)
     fun handleQrCodeGenerationException(ex: QrCodeGenerationException): ResponseEntity<ErrorDto> {
